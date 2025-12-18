@@ -41,6 +41,7 @@ else
     echo "SageAttention installed"
 fi
 
+cd /workspace/ComfyUI
 pip install --upgrade pip
 pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu128
 pip install -r requirements.txt
