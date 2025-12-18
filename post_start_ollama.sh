@@ -1,6 +1,10 @@
 #!/bin/bash
 set -euo pipefail
 
+# Stop and disable Nginx if it's running
+systemctl stop nginx 2>/dev/null || true
+systemctl disable nginx 2>/dev/null || true
+
 echo "Preparing workspace..."
 mkdir -p /workspace/ollama /workspace/openwebui
 
