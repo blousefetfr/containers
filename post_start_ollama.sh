@@ -56,5 +56,5 @@ fi
 echo "Starting Open WebUI..."
 nohup /workspace/run-openwebui.sh >/workspace/openwebui.log 2>&1 &
 
-echo "Open WebUI: port 3000 | Ollama API: port 11434"
+echo "Open WebUI: port 8080 | Ollama API: port 11434"
 echo "Logs: /workspace/ollama.log and /workspace/openwebui.log"
