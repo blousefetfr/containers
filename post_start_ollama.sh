@@ -40,8 +40,9 @@ pip install open-webui
 
 # Create a run script for Open WebUI
 if [ -e "/workspace/run-openwebui.sh" ]; then
+  echo "OpenWebUI start script already installed"
 else
-  echo "#!/usr/bin/env bash" > /workspace/run-openwebui.sh
+ echo "#!/usr/bin/env bash" > /workspace/run-openwebui.sh
   echo "set -euo pipefail" >> /workspace/run-openwebui.sh
   echo "source /workspace/.venv/bin/activate" >> /workspace/run-openwebui.sh
   echo "export OLLAMA_API_BASE=\"http://127.0.0.1:11434\"" >> /workspace/run-openwebui.sh
@@ -49,6 +50,7 @@ else
   echo "# Bind to all interfaces so l'UI soit accessible via l'URL publique" >> /workspace/run-openwebui.sh
   echo "exec /workspace/.venv/bin/open-webui serve" >> /workspace/run-openwebui.sh
   chmod +x /workspace/run-openwebui.sh
+  echo "OpenWebUI start script installed"
 fi
 
 echo "Starting Open WebUI..."
