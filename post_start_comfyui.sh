@@ -12,6 +12,7 @@ apt install -y git python3 python3-venv python3-pip wget
 # Stop and disable Nginx if it's running
 systemctl stop nginx 2>/dev/null || true
 systemctl disable nginx 2>/dev/null || true
+pkill -f nginx || true
 
 if [ -d "/workspace/ComfyUI" ]; then
     echo "ComfyUI already installed"
