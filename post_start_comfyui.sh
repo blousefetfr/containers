@@ -30,6 +30,7 @@ git pull
 if [ -d "/workspace/SageAttention" ]; then
     echo "SageAttention already installed"
 else
+    cd /workspace/
     # Clone and install ComfyUI
     echo "SageAttention installation"
     git clone https://github.com/thu-ml/SageAttention.git
