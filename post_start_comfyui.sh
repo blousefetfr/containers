@@ -49,7 +49,7 @@ pip install triton ninja numpy
 mkdir -p custom_nodes
 cd custom_nodes
 
-if [ -d "/workspace/ComfyUI/custom_nodes/ComfyUI-Manager" ]; then
+if [ ! -d "/workspace/ComfyUI/custom_nodes/ComfyUI-Manager" ]; then
     git clone https://github.com/ltdrdata/ComfyUI-Manager.git
 else
     cd ComfyUI-Manager
@@ -58,7 +58,7 @@ else
 fi
 pip install -r ./ComfyUI-Manager/requirements.txt
 
-if [ -d "/workspace/ComfyUI/custom_nodes/ComfyUI-Wiki-Workflows" ]; then
+if [ ! -d "/workspace/ComfyUI/custom_nodes/ComfyUI-Wiki-Workflows" ]; then
     git clone https://github.com/comfyui-wiki/ComfyUI-Wiki-Workflows
 else
     cd ComfyUI-Wiki-Workflows
@@ -66,7 +66,7 @@ else
     cd ..
 fi
 
-if [ -d "/workspace/ComfyUI/custom_nodes/ComfyUI-Florence2" ]; then
+if [ ! -d "/workspace/ComfyUI/custom_nodes/ComfyUI-Florence2" ]; then
     git clone https://github.com/kijai/ComfyUI-Florence2
 else
     cd ComfyUI-Florence2
@@ -75,7 +75,7 @@ else
 fi
 pip install -r ./ComfyUI-Florence2/requirements.txt
 
-if [ -d "/workspace/ComfyUI/custom_nodes/comfyui_controlnet_aux" ]; then
+if [ ! -d "/workspace/ComfyUI/custom_nodes/comfyui_controlnet_aux" ]; then
     git clone https://github.com/Fannovel16/comfyui_controlnet_aux
 else
     cd comfyui_controlnet_aux
@@ -84,7 +84,7 @@ else
 fi
 pip install -r ./comfyui_controlnet_aux/requirements.txt
 
-if [ -d "/workspace/ComfyUI/custom_nodes/ComfyUI-GGUF" ]; then
+if [ ! -d "/workspace/ComfyUI/custom_nodes/ComfyUI-GGUF" ]; then
     git clone https://github.com/city96/ComfyUI-GGUF
 else
     cd ComfyUI-GGUF
@@ -93,7 +93,7 @@ else
 fi
 pip install -r ./ComfyUI-GGUF/requirements.txt
 
-if [ -d "/workspace/ComfyUI/custom_nodes/rgthree-comfy" ]; then
+if [ ! -d "/workspace/ComfyUI/custom_nodes/rgthree-comfy" ]; then
     git clone https://github.com/rgthree/rgthree-comfy
 else
     cd rgthree-comfy
@@ -102,7 +102,7 @@ else
 fi
 pip install -r ./rgthree-comfy/requirements.txt
 
-if [ -d "/workspace/ComfyUI/custom_nodes/ComfyUI-Easy-Use" ]; then
+if [ ! -d "/workspace/ComfyUI/custom_nodes/ComfyUI-Easy-Use" ]; then
     git clone https://github.com/yolain/ComfyUI-Easy-Use
 else
     cd ComfyUI-Easy-Use
@@ -111,7 +111,7 @@ else
 fi
 pip install -r ./ComfyUI-Easy-Use/requirements.txt
 
-if [ -d "/workspace/ComfyUI/custom_nodes/ComfyUI-KJNodes" ]; then
+if [ ! -d "/workspace/ComfyUI/custom_nodes/ComfyUI-KJNodes" ]; then
     git clone https://github.com/kijai/ComfyUI-KJNodes
 else
     cd ComfyUI-KJNodes
@@ -120,7 +120,7 @@ else
 fi
 pip install -r ./ComfyUI-KJNodes/requirements.txt
 
-if [ -d "/workspace/ComfyUI/custom_nodes/ComfyUI-WanVideoWrapper" ]; then
+if [ ! -d "/workspace/ComfyUI/custom_nodes/ComfyUI-WanVideoWrapper" ]; then
     git clone https://github.com/kijai/ComfyUI-WanVideoWrapper
 else
     cd ComfyUI-WanVideoWrapper
@@ -130,7 +130,7 @@ fi
 pip install -r ./ComfyUI-WanVideoWrapper/requirements.txt
 pip install -r ./ComfyUI-WanVideoWrapper/fantasyportrait/requirements.txt
 
-if [ -d "/workspace/ComfyUI/custom_nodes/ComfyUI-Impact-Pack" ]; then
+if [ ! -d "/workspace/ComfyUI/custom_nodes/ComfyUI-Impact-Pack" ]; then
     git clone https://github.com/ltdrdata/ComfyUI-Impact-Pack
 else
     cd ComfyUI-Impact-Pack
@@ -139,7 +139,7 @@ else
 fi
 pip install -r ./ComfyUI-Impact-Pack/requirements.txt
 
-if [ -d "/workspace/ComfyUI/custom_nodes/ComfyUI-UltimateSDUpscale" ]; then
+if [ ! -d "/workspace/ComfyUI/custom_nodes/ComfyUI-UltimateSDUpscale" ]; then
     git clone https://github.com/ssitu/ComfyUI_UltimateSDUpscale
 else
     cd ComfyUI_UltimateSDUpscale
@@ -147,7 +147,7 @@ else
     cd ..
 fi
 
-if [ -d "/workspace/ComfyUI/custom_nodes/ComfyUI_essentials" ]; then
+if [ ! -d "/workspace/ComfyUI/custom_nodes/ComfyUI_essentials" ]; then
     git clone https://github.com/cubiq/ComfyUI_essentials
 else
     cd ComfyUI_essentials
@@ -156,7 +156,7 @@ else
 fi
 pip install -r ./ComfyUI_essentials/requirements.txt
 
-if [ -d "/workspace/ComfyUI/custom_nodes/ComfyUI-MagCache" ]; then
+if [ ! -d "/workspace/ComfyUI/custom_nodes/ComfyUI-MagCache" ]; then
     git clone https://github.com/Zehong-Ma/ComfyUI-MagCache
 else
     cd ComfyUI-MagCache
@@ -165,7 +165,7 @@ else
 fi
 pip install -r ./ComfyUI-MagCache/requirements.txt
 
-if [ -d "/workspace/ComfyUI/custom_nodes/wlsh_nodes" ]; then
+if [ ! -d "/workspace/ComfyUI/custom_nodes/wlsh_nodes" ]; then
     git clone https://github.com/wallish77/wlsh_nodes
 else
     cd wlsh_nodes
@@ -174,7 +174,7 @@ else
 fi
 pip install -r ./wlsh_nodes/requirements.txt
 
-if [ -d "/workspace/ComfyUI/custom_nodes/comfyui-vrgamedevgirl" ]; then
+if [ ! -d "/workspace/ComfyUI/custom_nodes/comfyui-vrgamedevgirl" ]; then
     git clone https://github.com/vrgamegirl19/comfyui-vrgamedevgirl
 else
     cd comfyui-vrgamedevgirl
@@ -183,7 +183,7 @@ else
 fi
 spip install -r ./comfyui-vrgamedevgirl/requirements.txt
 
-if [ -d "/workspace/ComfyUI/custom_nodes/ComfyUI-VideoHelperSuite" ]; then
+if [ ! -d "/workspace/ComfyUI/custom_nodes/ComfyUI-VideoHelperSuite" ]; then
     git clone https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite
 else
     cd ComfyUI-VideoHelperSuite
