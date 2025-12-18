@@ -49,6 +49,7 @@ pip install triton ninja numpy
 mkdir -p custom_nodes
 cd custom_nodes
 
+echo "Installation and update of ComfyUI Custom Nodes"
 if [ ! -d "/workspace/ComfyUI/custom_nodes/ComfyUI-Manager" ]; then
     git clone https://github.com/ltdrdata/ComfyUI-Manager.git
 else
@@ -330,5 +331,8 @@ chmod +x /workspace/ComfyUI/main.py
 
 # Run ComfyUI on port 3001
 cd /workspace/ComfyUI
-source venv/bin/activate
-python main.py --listen --port 3001
+echo "Starting ComfyUI"
+nohup python main.py --listen --port 3001 >/workspace/comfyui.log 2>&1 &
+
+echo "ComfyUI: port 3001"
+echo "Logs: /workspace/comfyui.log"
