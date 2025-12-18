@@ -6,7 +6,7 @@ mkdir -p /workspace/ollama /workspace/openwebui
 
 echo "Updating apt and installing deps..."
 apt-get update -y
-apt-get install -y curl wget git python3-pip python3-venv
+apt-get install -y curl wget git python3-pip python3-venv lshw
 
 # -------- Install Ollama (native) --------
 if ! command -v ollama >/dev/null 2>&1; then
