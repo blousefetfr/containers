@@ -1,5 +1,7 @@
 #!/bin/bash
 
+COMFYUI_DIR="/workspace/ComfyUI"
+
 # Set up workspace
 mkdir -p /workspace && cd /workspace
 
@@ -37,6 +39,9 @@ else
     git clone https://github.com/comfyanonymous/ComfyUI.git
     echo "ComfyUI installed"
 fi
+cd /workspace/ComfyUI
+pip3.11 install -r requirements.txt
+pip3.11 install triton ninja numpy
 
 
 if [ -d "/workspace/SageAttention" ]; then
@@ -66,9 +71,6 @@ else
     python3.11 setup.py install
     echo "Flash-Attention installed"
 fi
-cd /workspace/ComfyUI
-pip3.11 install -r requirements.txt
-pip3.11 install triton ninja numpy
 
 # Clone and install ComfyUI-Manager inside custom_nodes
 mkdir -p custom_nodes
