@@ -4,10 +4,20 @@
 mkdir -p /workspace && cd /workspace
 
 # Update system packages
+# add-apt-repository ppa:deadsnakes/ppa
 apt update && apt upgrade -y
 
 # Install required dependencies
-apt install -y git python3 python3-venv python3-pip wget
+#apt install -y git python3.11 python3.11-venv python3.11-distutils wget curl
+
+# Install pip for 3.11
+#curl -sS -O https://bootstrap.pypa.io/get-pip.py | python3.11
+pip3.11 install --upgrade pip
+
+python3.11 -m venv venv
+source venv/bin/activate
+
+# apt install -y git python3 python3-venv python3-pip wget
 
 # Stop and disable Nginx if it's running
 systemctl stop nginx 2>/dev/null || true
@@ -16,17 +26,16 @@ pkill -f nginx || true
 
 if [ -d "/workspace/ComfyUI" ]; then
     echo "ComfyUI already installed"
+    cd /workspace/ComfyUI
+    git pull
 else
+    cd /workspace/
     # Clone and install ComfyUI
     echo "ComfyUI installation"
     git clone https://github.com/comfyanonymous/ComfyUI.git
     echo "ComfyUI installed"
 fi
 
-cd /workspace/ComfyUI
-python3 -m venv venv
-source venv/bin/activate
-git pull
 
 if [ -d "/workspace/SageAttention" ]; then
     echo "SageAttention already installed"
@@ -38,15 +47,14 @@ else
     export EXT_PARALLEL=16
     export MAX_JOBS=16
     cd /workspace/SageAttention
-    python setup.py install
+    python3.11 setup.py install
     echo "SageAttention installed"
 fi
 
 cd /workspace/ComfyUI
-pip install --upgrade pip
-pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu128
-pip install -r requirements.txt
-pip install triton ninja numpy
+pip3.11 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/nightly/cu128
+pip3.11 install -r requirements.txt
+pip3.11 install triton ninja numpy
 
 # Clone and install ComfyUI-Manager inside custom_nodes
 mkdir -p custom_nodes
