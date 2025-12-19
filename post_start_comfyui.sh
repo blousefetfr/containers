@@ -110,6 +110,8 @@ CUSTOM_NODES=(
     "https://github.com/BadCafeCode/masquerade-nodes-comfyui"
     "https://github.com/hgabha/WWAA-CustomNodes"
     "https://github.com/lrzjason/Comfyui-QwenEditUtils"
+    "https://github.com/IceClear/SeedVR2"
+    "https://github.com/numz/ComfyUI-SeedVR2_VideoUpscaler"
     "https://github.com/1038lab/ComfyUI-RMBG"
     "https://github.com/MoonGoblinDev/Civicomfy"
     "https://github.com/MadiatorLabs/ComfyUI-RunpodDirect"
