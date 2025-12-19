@@ -60,17 +60,20 @@ else
     echo "SageAttention installed"
 fi
 
-if [ -d "/workspace/Flash-Attention" ]; then
-    echo "Flash-Attention already installed"
-else
-    cd /workspace/
+echo "Flash-Attention installation"
+pip3.11 install flash-attn --no-build-isolation
+
+#if [ -d "/workspace/Flash-Attention" ]; then
+#    echo "Flash-Attention already installed"
+#else
+#    cd /workspace/
     # Clone and install ComfyUI
-    echo "Flash-Attention installation"
-    git clone https://github.com/Dao-AILab/Flash-Attention
-    cd /workspace/Flash-Attention/hopper
-    python3.11 setup.py install
-    echo "Flash-Attention installed"
-fi
+#    echo "Flash-Attention installation"
+#    git clone https://github.com/Dao-AILab/Flash-Attention
+#    cd /workspace/Flash-Attention/hopper
+#    python3.11 setup.py install
+#    echo "Flash-Attention installed"
+#fi
 
 # Clone and install ComfyUI-Manager inside custom_nodes
 mkdir -p custom_nodes
