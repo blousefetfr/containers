@@ -60,8 +60,9 @@ else
     echo "SageAttention installed"
 fi
 
-#echo "Flash-Attention installation"
-#pip3.11 install flash-attn --no-build-isolation
+echo "Flash-Attention installation"
+FLASH_ATTENTION_SKIP_CUDA_BUILD=TRUE pip3.11 install flash-attn --no-build-isolation
+echo "Flash-Attention installed"
 
 #if [ -d "/workspace/Flash-Attention" ]; then
 #    echo "Flash-Attention already installed"
