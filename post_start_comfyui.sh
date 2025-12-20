@@ -60,21 +60,13 @@ else
     echo "SageAttention installed"
 fi
 
-echo "Flash-Attention installation"
-FLASH_ATTENTION_SKIP_CUDA_BUILD=TRUE pip3.11 install flash-attn --no-build-isolation
-echo "Flash-Attention installed"
-
-#if [ -d "/workspace/Flash-Attention" ]; then
-#    echo "Flash-Attention already installed"
-#else
-#    cd /workspace/
-    # Clone and install ComfyUI
-#    echo "Flash-Attention installation"
-#    git clone https://github.com/Dao-AILab/Flash-Attention
-#    cd /workspace/Flash-Attention/hopper
-#    python3.11 setup.py install
-#    echo "Flash-Attention installed"
-#fi
+if [ -d "/workspace/venv/lib/python3.11/site-packages/flash_attn" ]; then
+    echo "Flash-Attention already installed"
+else
+    echo "Flash-Attention installation"
+    MAX_JOBS=4 pip3.11 install flash-attn --no-build-isolation
+    echo "Flash-Attention installed"
+fi
 
 # Clone and install ComfyUI-Manager inside custom_nodes
 mkdir -p custom_nodes
