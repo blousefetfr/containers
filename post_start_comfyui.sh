@@ -127,19 +127,12 @@ for node_dir in */; do
             echo "Installing requirements.txt for $node_dir"
             pip3.11 install --no-cache-dir -r requirements.txt
         fi
-        # Check for install.py
-#        if [ -f "install.py" ]; then
-#            echo "Running install.py for $node_dir"
-#            python3.11 install.py
-#        fi
-#        # Check for setup.py
-#        if [ -f "setup.py" ]; then
-#            echo "Running setup.py for $node_dir"
-#            pip3.11 install --no-cache-dir -e .
-#        fi
         cd /workspace/ComfyUI/custom_nodes/
     fi
 done
+
+#Patch nodes_qwen
+wget -O /workspace/ComfyUI/comfy_extras/nodes_qwen.py "https://huggingface.co/Phr00t/Qwen-Image-Edit-Rapid-AIO/resolve/main/fixed-textencode-node/nodes_qwen.v2.py"
 
 # Set execution permission
 chmod +x /workspace/ComfyUI/main.py
