@@ -62,6 +62,25 @@ if [ ! -d "$COMFYUI_DIR" ] || [ ! -d "$VENV_DIR" ]; then
         
         echo "Installing ComfyUI dependencies..."
         pip install --no-cache-dir -r requirements.txt
+
+        echo "Installing and Compiling SageAttention2, SageAttention3"
+        cd /workspace/
+        git clone https://github.com/thu-ml/SageAttention.git
+        cd SageAttention 
+        EXT_PARALLEL=4 NVCC_APPEND_FLAGS="--threads 8" MAX_JOBS=32 python setup.py install
+        cd sageattention3_blackwell
+        EXT_PARALLEL=4 NVCC_APPEND_FLAGS="--threads 8" MAX_JOBS=32 python setup.py install
+        echo "SageAttention2 and 3 installed"
+
+        echo "Installing and Compiling FlashAttention, FlashAttention3"
+        cd /workspace/
+        MAX_JOBS=4 pip install flash-attn --no-build-isolation
+        git clone https://github.com/Dao-AILab/flash-attention.git --recursive
+        cd hopper
+        python setup.py install
+        echo "FlashAttention and 3 installed"
+        
+        cd $COMFYUI_DIR
         
         echo "Installing custom node dependencies..."
         # Install dependencies for all custom nodes
