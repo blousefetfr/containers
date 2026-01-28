@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -e  # Exit the script if any statement returns a non-true return value
 
 COMFYUI_DIR="/workspace/ComfyUI"
