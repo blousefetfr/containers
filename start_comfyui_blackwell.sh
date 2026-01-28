@@ -118,7 +118,6 @@ else
     # Install dependencies for all custom nodes
     cd "$COMFYUI_DIR/custom_nodes"
     for node_dir in */; do
-x
         if [ -d "$node_dir" ]; then
             echo "Checking dependencies for $node_dir..."
             cd "$COMFYUI_DIR/custom_nodes/$node_dir"
