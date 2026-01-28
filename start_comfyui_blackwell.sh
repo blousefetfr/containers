@@ -104,7 +104,7 @@ else
             # Check for requirements.txt
             if [ -f "requirements.txt" ]; then
                 echo "Installing requirements.txt for $node_dir"
-                uv pip install --no-cache -r requirements.txt
+                pip install --no-cache -r requirements.txt
             fi
             
             # Check for install.py
