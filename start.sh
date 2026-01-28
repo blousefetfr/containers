@@ -1,104 +1,145 @@
 #!/bin/bash
-set -e # Exit the script if any statement returns a non-true return value
+set -e  # Exit the script if any statement returns a non-true return value
 
-# ---------------------------------------------------------------------------- #
-#                          Function Definitions                                #
-# ---------------------------------------------------------------------------- #
+COMFYUI_DIR="/workspace/ComfyUI"
+VENV_DIR="/workspace/venv"
 
-# Start nginx service
-start_nginx() {
-    echo "Starting Nginx service..."
-    service nginx start
-}
 
-# Execute script if exists
-execute_script() {
-    local script_path=$1
-    local script_msg=$2
-    if [[ -f ${script_path} ]]; then
-        echo "${script_msg}"
-        bash ${script_path}
+# Create default comfyui_args.txt if it doesn't exist
+ARGS_FILE="/workspace/comfyui_args.txt"
+if [ ! -f "$ARGS_FILE" ]; then
+    echo "# Add your custom ComfyUI arguments here (one per line)" > "$ARGS_FILE"
+    echo "Created empty ComfyUI arguments file at $ARGS_FILE"
+fi
+
+# Setup ComfyUI if needed
+if [ ! -d "$COMFYUI_DIR" ] || [ ! -d "$VENV_DIR" ]; then
+    echo "First time setup: Installing ComfyUI and dependencies..."
+    
+    # Clone ComfyUI if not present
+    if [ ! -d "$COMFYUI_DIR" ]; then
+        cd /workspace/
+        git clone https://github.com/comfyanonymous/ComfyUI.git
     fi
-}
+    
+    # Install ComfyUI-Manager if not present
+    if [ ! -d "$COMFYUI_DIR/custom_nodes/ComfyUI-Manager" ]; then
+        echo "Installing ComfyUI-Manager..."
+        mkdir -p "$COMFYUI_DIR/custom_nodes"
+        cd "$COMFYUI_DIR/custom_nodes"
+        git clone https://github.com/ltdrdata/ComfyUI-Manager.git
+    fi
 
-# Setup ssh
-setup_ssh() {
-    if [[ $PUBLIC_KEY ]]; then
-        echo "Setting up SSH..."
-        mkdir -p ~/.ssh
-        echo "$PUBLIC_KEY" >> ~/.ssh/authorized_keys
-        chmod 700 -R ~/.ssh
+    # Install additional custom nodes
+    CUSTOM_NODES=(
+        "https://github.com/kijai/ComfyUI-KJNodes"
+        "https://github.com/MoonGoblinDev/Civicomfy"
+        "https://github.com/MadiatorLabs/ComfyUI-RunpodDirect"
+        "https://github.com/crystian/ComfyUI-Crystools"
+    )
 
-        if [ ! -f /etc/ssh/ssh_host_rsa_key ]; then
-            ssh-keygen -t rsa -f /etc/ssh/ssh_host_rsa_key -q -N ''
-            echo "RSA key fingerprint:"
-            ssh-keygen -lf /etc/ssh/ssh_host_rsa_key.pub
+    for repo in "${CUSTOM_NODES[@]}"; do
+        repo_name=$(basename "$repo")
+        if [ ! -d "$COMFYUI_DIR/custom_nodes/$repo_name" ]; then
+            echo "Installing $repo_name..."
+            cd "$COMFYUI_DIR/custom_nodes"
+            git clone "$repo"
         fi
+    done
+    
+    # Create and setup virtual environment if not present
+    if [ ! -d "$VENV_DIR" ]; then
+        cd $COMFYUI_DIR
+        # Create venv with access to system packages (torch, numpy, etc. pre-installed in image)
+        python -m venv --system-site-packages $VENV_DIR
+        source $VENV_DIR/bin/activate
 
-        if [ ! -f /etc/ssh/ssh_host_dsa_key ]; then
-            ssh-keygen -t dsa -f /etc/ssh/ssh_host_dsa_key -q -N ''
-            echo "DSA key fingerprint:"
-            ssh-keygen -lf /etc/ssh/ssh_host_dsa_key.pub
-        fi
+        # Ensure pip is available in the venv (needed for ComfyUI-Manager)
+        python -m ensurepip --upgrade
+        python -m pip install --upgrade pip
 
-        if [ ! -f /etc/ssh/ssh_host_ecdsa_key ]; then
-            ssh-keygen -t ecdsa -f /etc/ssh/ssh_host_ecdsa_key -q -N ''
-            echo "ECDSA key fingerprint:"
-            ssh-keygen -lf /etc/ssh/ssh_host_ecdsa_key.pub
-        fi
+        echo "Base packages (torch, numpy, etc.) available from system site-packages"
+        echo "Installing custom node dependencies..."
 
-        if [ ! -f /etc/ssh/ssh_host_ed25519_key ]; then
-            ssh-keygen -t ed25519 -f /etc/ssh/ssh_host_ed25519_key -q -N ''
-            echo "ED25519 key fingerprint:"
-            ssh-keygen -lf /etc/ssh/ssh_host_ed25519_key.pub
-        fi
+        # Install dependencies for all custom nodes
+        cd "$COMFYUI_DIR/custom_nodes"
+        for node_dir in */; do
+            if [ -d "$node_dir" ]; then
+                echo "Checking dependencies for $node_dir..."
+                cd "$COMFYUI_DIR/custom_nodes/$node_dir"
+                
+                # Check for requirements.txt
+                if [ -f "requirements.txt" ]; then
+                    echo "Installing requirements.txt for $node_dir"
+                    pip install --no-cache-dir -r requirements.txt
+                fi
 
-        service ssh start
+                # Check for install.py
+                if [ -f "install.py" ]; then
+                    echo "Running install.py for $node_dir"
+                    python install.py
+                fi
 
-        echo "SSH host keys:"
-        for key in /etc/ssh/*.pub; do
-            echo "Key: $key"
-            ssh-keygen -lf $key
+                # Check for setup.py
+                if [ -f "setup.py" ]; then
+                    echo "Running setup.py for $node_dir"
+                    pip install --no-cache-dir -e .
+                fi
+            fi
         done
     fi
-}
+else
+    # Just activate the existing venv
+    source $VENV_DIR/bin/activate
 
-# Export env vars
-export_env_vars() {
-    echo "Exporting environment variables..."
-    printenv | grep -E '^[A-Z_][A-Z0-9_]*=' | grep -v '^PUBLIC_KEY' | awk -F = '{ val = $0; sub(/^[^=]*=/, "", val); print "export " $1 "=\"" val "\"" }' > /etc/rp_environment
-    if ! grep -q 'source /etc/rp_environment' ~/.bashrc; then
-        echo 'source /etc/rp_environment' >> ~/.bashrc
+    echo "Checking for custom node dependencies..."
+
+    # Install dependencies for all custom nodes
+    cd "$COMFYUI_DIR/custom_nodes"
+    for node_dir in */; do
+        if [ -d "$node_dir" ]; then
+            echo "Checking dependencies for $node_dir..."
+            cd "$COMFYUI_DIR/custom_nodes/$node_dir"
+            
+            # Check for requirements.txt
+            if [ -f "requirements.txt" ]; then
+                echo "Installing requirements.txt for $node_dir"
+                uv pip install --no-cache -r requirements.txt
+            fi
+            
+            # Check for install.py
+            if [ -f "install.py" ]; then
+                echo "Running install.py for $node_dir"
+                python install.py
+            fi
+            
+            # Check for setup.py
+            if [ -f "setup.py" ]; then
+                echo "Running setup.py for $node_dir"
+                uv pip install --no-cache -e .
+            fi
+        fi
+    done
+fi
+
+# Start ComfyUI with custom arguments if provided
+cd $COMFYUI_DIR
+FIXED_ARGS="--listen 0.0.0.0 --port 8188"
+if [ -s "$ARGS_FILE" ]; then
+    # File exists and is not empty, combine fixed args with custom args
+    CUSTOM_ARGS=$(grep -v '^#' "$ARGS_FILE" | tr '\n' ' ')
+    if [ ! -z "$CUSTOM_ARGS" ]; then
+        echo "Starting ComfyUI with additional arguments: $CUSTOM_ARGS"
+        nohup python main.py $FIXED_ARGS $CUSTOM_ARGS &> /workspace/comfyui.log &
+    else
+        echo "Starting ComfyUI with default arguments"
+        nohup python main.py $FIXED_ARGS &> /workspace/comfyui.log &
     fi
-}
+else
+    # File is empty, use only fixed args
+    echo "Starting ComfyUI with default arguments"
+    nohup python main.py $FIXED_ARGS &> /workspace/comfyui.log &
+fi
 
-# Start jupyter lab
-start_jupyter() {
-    if [[ $JUPYTER_PASSWORD ]]; then
-        echo "Starting Jupyter Lab..."
-        mkdir -p /workspace &&
-            cd / &&
-            nohup python3 -m jupyter lab --allow-root --no-browser --port=8888 --ip=* --FileContentsManager.delete_to_trash=False --ServerApp.terminado_settings='{"shell_command":["/bin/bash"]}' --IdentityProvider.token=$JUPYTER_PASSWORD --ServerApp.allow_origin=* --ServerApp.preferred_dir=/workspace &> /jupyter.log &
-        echo "Jupyter Lab started"
-    fi
-}
-
-# ---------------------------------------------------------------------------- #
-#                               Main Program                                   #
-# ---------------------------------------------------------------------------- #
-
-start_nginx
-
-execute_script "/pre_start.sh" "Running pre-start script..."
-
-echo "Pod Started"
-
-setup_ssh
-start_jupyter
-export_env_vars
-
-echo "Start script(s) finished, Pod is ready to use."
-
-execute_script "/post_start.sh" "Running post-start script..."
-
-sleep infinity
+# Tail the log file
+tail -f /workspace/comfyui.log
