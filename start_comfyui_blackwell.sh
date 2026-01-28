@@ -59,8 +59,11 @@ if [ ! -d "$COMFYUI_DIR" ] || [ ! -d "$VENV_DIR" ]; then
         python -m pip install --upgrade pip
 
         echo "Base packages (torch, numpy, etc.) available from system site-packages"
+        
+        echo "Installing ComfyUI dependencies..."
+        pip install --no-cache-dir -r requirements.txt
+        
         echo "Installing custom node dependencies..."
-
         # Install dependencies for all custom nodes
         cd "$COMFYUI_DIR/custom_nodes"
         for node_dir in */; do
@@ -93,10 +96,10 @@ else
     source $VENV_DIR/bin/activate
 
     echo "Checking for custom node dependencies..."
-
     # Install dependencies for all custom nodes
     cd "$COMFYUI_DIR/custom_nodes"
     for node_dir in */; do
+x
         if [ -d "$node_dir" ]; then
             echo "Checking dependencies for $node_dir..."
             cd "$COMFYUI_DIR/custom_nodes/$node_dir"
