@@ -137,7 +137,7 @@ else
             # Check for setup.py
             if [ -f "setup.py" ]; then
                 echo "Running setup.py for $node_dir"
-                uv pip install --no-cache -e .
+                pip install --no-cache -e .
             fi
         fi
     done
