@@ -32,17 +32,23 @@ if [ ! -d "$COMFYUI_DIR" ] || [ ! -d "$VENV_DIR" ]; then
 
     # Install additional custom nodes
     CUSTOM_NODES=(
-        "https://github.com/kijai/ComfyUI-KJNodes"
         "https://github.com/MoonGoblinDev/Civicomfy"
         "https://github.com/MadiatorLabs/ComfyUI-RunpodDirect"
         "https://github.com/crystian/ComfyUI-Crystools"
+        "https://github.com/kijai/ComfyUI-KJNodes"
+        "https://github.com/kijai/ComfyUI-WanVideoWrapper"
+        "https://github.com/Lightricks/ComfyUI-LTXVideo"
+        "https://github.com/rgthree/rgthree-comfy"
+        "https://github.com/WASasquatch/was-node-suite-comfyui"
+        "https://github.com/ltdrdata/ComfyUI-Impact-Pack"
         "https://github.com/princepainter/ComfyUI-PainterI2VforKJ"
         "https://github.com/pythongosssss/ComfyUI-Custom-Scripts"
-        "https://github.com/yolain/ComfyUI-Easy-Use"
-        "https://github.com/kijai/ComfyUI-WanVideoWrapper"
-        "https://github.com/Fannovel16/ComfyUI-Frame-Interpolation"
         "https://github.com/lquesada/ComfyUI-Inpaint-CropAndStitch"
-        "https://github.com/rgthree/rgthree-comfy"
+        "https://github.com/yolain/ComfyUI-Easy-Use"
+        "https://github.com/Kosinkadink/ComfyUI-VideoHelperSuite"
+        "https://github.com/Fannovel16/ComfyUI-Frame-Interpolation"
+        "https://github.com/numz/ComfyUI-SeedVR2_VideoUpscaler"
+        "https://github.com/1038lab/ComfyUI-RMBG"
     )
 
     for repo in "${CUSTOM_NODES[@]}"; do
@@ -63,7 +69,7 @@ if [ ! -d "$COMFYUI_DIR" ] || [ ! -d "$VENV_DIR" ]; then
 
         echo "Base packages (torch, numpy, etc.) available from system site-packages"    
         echo "Installing ComfyUI dependencies..."
-        pip install --no-cache-dir -r requirements.txt -r manager_requirements.txt
+        pip install --no-cache-dir -r requirements.txt
 
 
         echo "Installing and Compiling SageAttention2, SageAttention3"
@@ -148,7 +154,7 @@ fi
 
 # Start ComfyUI with custom arguments if provided
 cd $COMFYUI_DIR
-FIXED_ARGS="--listen 0.0.0.0 --port 8188 --enable-manager"
+FIXED_ARGS="--listen 0.0.0.0 --port 8188 --enable-manager --use-sage-attention"
 if [ -s "$ARGS_FILE" ]; then
     # File exists and is not empty, combine fixed args with custom args
     CUSTOM_ARGS=$(grep -v '^#' "$ARGS_FILE" | tr '\n' ' ')
