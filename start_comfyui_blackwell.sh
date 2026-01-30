@@ -67,6 +67,8 @@ if [ ! -d "$COMFYUI_DIR" ] || [ ! -d "$VENV_DIR" ]; then
         python -m venv --system-site-packages $VENV_DIR
         source $VENV_DIR/bin/activate
 
+        pip install --pre torch torchvision torchaudio xformers triton numpy --index-url https://download.pytorch.org/whl/nightly/cu130
+
         echo "Base packages (torch, numpy, etc.) available from system site-packages"    
         echo "Installing ComfyUI dependencies..."
         pip install --no-cache-dir -r requirements.txt
