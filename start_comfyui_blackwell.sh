@@ -61,14 +61,10 @@ if [ ! -d "$COMFYUI_DIR" ] || [ ! -d "$VENV_DIR" ]; then
         python -m venv --system-site-packages $VENV_DIR
         source $VENV_DIR/bin/activate
 
-        # Ensure pip is available in the venv (needed for ComfyUI-Manager)
-        python -m ensurepip --upgrade
-        python -m pip install --upgrade pip
-
-        echo "Base packages (torch, numpy, etc.) available from system site-packages"
-        
+        echo "Base packages (torch, numpy, etc.) available from system site-packages"    
         echo "Installing ComfyUI dependencies..."
-        pip install --no-cache-dir -r requirements.txt
+        pip install --no-cache-dir -r requirements.txt -r manager_requirements.txt
+
 
         echo "Installing and Compiling SageAttention2, SageAttention3"
         cd /workspace/
@@ -152,7 +148,7 @@ fi
 
 # Start ComfyUI with custom arguments if provided
 cd $COMFYUI_DIR
-FIXED_ARGS="--listen 0.0.0.0 --port 8188"
+FIXED_ARGS="--listen 0.0.0.0 --port 8188 --enable-manager"
 if [ -s "$ARGS_FILE" ]; then
     # File exists and is not empty, combine fixed args with custom args
     CUSTOM_ARGS=$(grep -v '^#' "$ARGS_FILE" | tr '\n' ' ')
