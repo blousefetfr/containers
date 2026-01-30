@@ -36,6 +36,13 @@ if [ ! -d "$COMFYUI_DIR" ] || [ ! -d "$VENV_DIR" ]; then
         "https://github.com/MoonGoblinDev/Civicomfy"
         "https://github.com/MadiatorLabs/ComfyUI-RunpodDirect"
         "https://github.com/crystian/ComfyUI-Crystools"
+        "https://github.com/princepainter/ComfyUI-PainterI2VforKJ"
+        "https://github.com/pythongosssss/ComfyUI-Custom-Scripts"
+        "https://github.com/yolain/ComfyUI-Easy-Use"
+        "https://github.com/kijai/ComfyUI-WanVideoWrapper"
+        "https://github.com/Fannovel16/ComfyUI-Frame-Interpolation"
+        "https://github.com/lquesada/ComfyUI-Inpaint-CropAndStitch"
+        "https://github.com/rgthree/rgthree-comfy"
     )
 
     for repo in "${CUSTOM_NODES[@]}"; do
