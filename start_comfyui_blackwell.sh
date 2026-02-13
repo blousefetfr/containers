@@ -4,7 +4,6 @@ set -e  # Exit the script if any statement returns a non-true return value
 COMFYUI_DIR="/workspace/ComfyUI"
 VENV_DIR="/workspace/venv"
 
-
 # Create default comfyui_args.txt if it doesn't exist
 ARGS_FILE="/workspace/comfyui_args.txt"
 if [ ! -f "$ARGS_FILE" ]; then
@@ -12,14 +11,30 @@ if [ ! -f "$ARGS_FILE" ]; then
     echo "Created empty ComfyUI arguments file at $ARGS_FILE"
 fi
 
+
 # Setup ComfyUI if needed
 if [ ! -d "$COMFYUI_DIR" ] || [ ! -d "$VENV_DIR" ]; then
     echo "First time setup: Installing ComfyUI and dependencies..."
+
+    if [ ! -d "$VENV_DIR" ]; then
+        echo "First time setup: Creating virtual environment for ComfyUI ..."
+        # Create venv with access to system packages (torch, numpy, etc. pre-installed in image)
+        python -m venv --system-site-packages $VENV_DIR
+        source $VENV_DIR/bin/activate
     
+        echo "Base packages (torch, numpy, etc.) available from system site-packages"    
+        pip install --pre torch torchvision torchaudio xformers triton numpy --index-url https://download.pytorch.org/whl/cu130
+    else
+        source $VENV_DIR/bin/activate
+    fi
     # Clone ComfyUI if not present
     if [ ! -d "$COMFYUI_DIR" ]; then
         cd /workspace/
         git clone https://github.com/comfyanonymous/ComfyUI.git
+
+        echo "Installing ComfyUI dependencies..."
+        cd "$COMFYUI_DIR"
+        pip install --no-cache-dir -r requirements.txt
     fi
     
     # Install ComfyUI-Manager if not present
@@ -63,15 +78,6 @@ if [ ! -d "$COMFYUI_DIR" ] || [ ! -d "$VENV_DIR" ]; then
     # Create and setup virtual environment if not present
     if [ ! -d "$VENV_DIR" ]; then
         cd $COMFYUI_DIR
-        # Create venv with access to system packages (torch, numpy, etc. pre-installed in image)
-        python -m venv --system-site-packages $VENV_DIR
-        source $VENV_DIR/bin/activate
-
-        pip install --pre torch torchvision torchaudio xformers triton numpy --index-url https://download.pytorch.org/whl/nightly/cu130
-
-        echo "Base packages (torch, numpy, etc.) available from system site-packages"    
-        echo "Installing ComfyUI dependencies..."
-        pip install --no-cache-dir -r requirements.txt
 
 
         echo "Installing and Compiling SageAttention2, SageAttention3"
