@@ -80,7 +80,7 @@ if [ ! -d "$COMFYUI_DIR" ] || [ ! -d "$VENV_DIR" ]; then
         cd $COMFYUI_DIR
 
 
-        echo "Installing and Compiling SageAttention2, SageAttention3"
+        echo "Installing and Compiling SageAttention2 and 3"
         cd /workspace/
         git clone https://github.com/thu-ml/SageAttention.git
         cd SageAttention 
@@ -89,21 +89,21 @@ if [ ! -d "$COMFYUI_DIR" ] || [ ! -d "$VENV_DIR" ]; then
         EXT_PARALLEL=4 NVCC_APPEND_FLAGS="--threads 8" MAX_JOBS=32 python setup.py install
         echo "SageAttention2 and 3 installed"
 
-        echo "Installing and Compiling FlashAttention, FlashAttention3"
-        cd /workspace/
-        MAX_JOBS=4 pip install flash-attn --no-build-isolation
-        git clone https://github.com/Dao-AILab/flash-attention.git --recursive
-        cd flash-attention/hopper
-        python setup.py install
-        echo "FlashAttention and 3 installed"
+        echo "Installing FlashAttention, FlashAttention3 and FlashAttention4"
+        pip install flash-attn --no-build-isolation
+        pip install flash-attn-3 --index-url https://download.pytorch.org/whl/cu130
+        pip install flash-attn-4==4.0.0b23
+        pip install "flash-attn-4[cu13]"
+        echo "FlashAttention3 and 4 installed"
         
         cd $COMFYUI_DIR
         
         echo "Installing custom node dependencies..."
+        pip install -r $COMFYUI_DIR/manager_requirements.txt        
         # Install dependencies for all custom nodes
         cd "$COMFYUI_DIR/custom_nodes"
         for node_dir in */; do
-            if [ -d "$node_dir" ]; then
+            if [ -d "$COMFYUI_DIR/custom_nodes/$node_dir" ]; then
                 echo "Checking dependencies for $node_dir..."
                 cd "$COMFYUI_DIR/custom_nodes/$node_dir"
                 
