@@ -64,6 +64,7 @@ if [ ! -d "$COMFYUI_DIR" ] || [ ! -d "$VENV_DIR" ]; then
         "https://github.com/Fannovel16/ComfyUI-Frame-Interpolation"
         "https://github.com/numz/ComfyUI-SeedVR2_VideoUpscaler"
         "https://github.com/1038lab/ComfyUI-RMBG"
+        "https://github.com/gabe-init/ComfyUI-11labs"
     )
 
     for repo in "${CUSTOM_NODES[@]}"; do
