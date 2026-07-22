@@ -93,7 +93,7 @@ if [ ! -d "$COMFYUI_DIR" ] || [ ! -d "$VENV_DIR" ]; then
         cd /workspace/
         MAX_JOBS=4 pip install flash-attn --no-build-isolation
         git clone https://github.com/Dao-AILab/flash-attention.git --recursive
-        cd hopper
+        cd flash-attention/hopper
         python setup.py install
         echo "FlashAttention and 3 installed"
         
