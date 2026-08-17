@@ -79,7 +79,8 @@ if [ ! -d "$COMFYUI_DIR" ] || [ ! -d "$VENV_DIR" ]; then
     cd $COMFYUI_DIR
     echo "Installing and Compiling SageAttention2 and 3"
     cd /workspace/
-    cd sageattention3_blackwell
+    git clone https://github.com/thu-ml/SageAttention.git
+    cd SageAttention/sageattention3_blackwell
     EXT_PARALLEL=4 NVCC_APPEND_FLAGS="--threads 8" MAX_JOBS=32 python setup.py install
     echo "SageAttention2 and 3 installed"
 
