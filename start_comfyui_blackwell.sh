@@ -87,7 +87,7 @@ if [ ! -d "$COMFYUI_DIR" ] || [ ! -d "$VENV_DIR" ]; then
     echo "SageAttention2 and 3 installed"
 
     echo "Installing FlashAttention, FlashAttention3 and FlashAttention4"
-    pip install flash-attn --no-build-isolation
+    #pip install flash-attn --no-build-isolation
     pip install flash-attn-3 --index-url https://download.pytorch.org/whl/cu130
     pip install flash-attn-4==4.0.0b23
     pip install "flash-attn-4[cu13]"
