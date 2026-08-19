@@ -77,24 +77,22 @@ if [ ! -d "$COMFYUI_DIR" ] || [ ! -d "$VENV_DIR" ]; then
     done
     
     cd $COMFYUI_DIR
-    echo "Installing and Compiling SageAttention2 and 3"
-    #cd /workspace/
-    #git clone https://github.com/thu-ml/SageAttention.git
-    #cd SageAttention
-    #EXT_PARALLEL=4 NVCC_APPEND_FLAGS="--threads 8" MAX_JOBS=32 python setup.py install
-    #cd sageattention3_blackwell
-    #EXT_PARALLEL=4 NVCC_APPEND_FLAGS="--threads 8" MAX_JOBS=32 python setup.py install
-    #echo "SageAttention2 and 3 installed"
+    echo "Installing SageAttention2 and 3"
     pip install https://huggingface.co/blousefet/PreCompiledWheels/resolve/main/sageattention-2.2.0-cp313-cp313-linux_x86_64.whl
     pip install https://huggingface.co/blousefet/PreCompiledWheels/resolve/main/sageattn3-1.0.0-cp313-cp313-linux_x86_64.whl
+    echo "SageAttention installed"
 
     echo "Installing FlashAttention, FlashAttention3 and FlashAttention4"
     pip install https://huggingface.co/blousefet/PreCompiledWheels/resolve/main/flash_attn-2.8.4-cp313-cp313-linux_x86_64.whl
     pip install flash-attn-3 --index-url https://download.pytorch.org/whl/cu130
     pip install flash-attn-4==4.0.0b23
     pip install "flash-attn-4[cu13]"
-    echo "FlashAttention3 and 4 installed"
+    echo "FlashAttention installed"
     
+    echo "Installing SolAttention"
+    pip install https://huggingface.co/blousefet/PreCompiledWheels/resolve/main/sol_attn-0.5.0-py3-none-any.whl
+    echo "SolAttention installed"
+   
     cd $COMFYUI_DIR
     
     echo "Installing custom node dependencies..."
