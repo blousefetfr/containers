@@ -85,11 +85,11 @@ if [ ! -d "$COMFYUI_DIR" ] || [ ! -d "$VENV_DIR" ]; then
     #cd sageattention3_blackwell
     #EXT_PARALLEL=4 NVCC_APPEND_FLAGS="--threads 8" MAX_JOBS=32 python setup.py install
     #echo "SageAttention2 and 3 installed"
-    pip install https://raw.githubusercontent.com/blousefetfr/SageAttention/main/sageattention-2.2.0-cp313-cp313-linux_x86_64.whl
-    pip install https://raw.githubusercontent.com/blousefetfr/SageAttention/main/sageattn3-1.0.0-cp313-cp313-linux_x86_64.whl
+    pip install https://huggingface.co/blousefet/PreCompiledWheels/resolve/main/sageattention-2.2.0-cp313-cp313-linux_x86_64.whl
+    pip install https://huggingface.co/blousefet/PreCompiledWheels/resolve/main/sageattn3-1.0.0-cp313-cp313-linux_x86_64.whl
 
     echo "Installing FlashAttention, FlashAttention3 and FlashAttention4"
-    #pip install flash-attn --no-build-isolation
+    pip install https://huggingface.co/blousefet/PreCompiledWheels/resolve/main/flash_attn-2.8.4-cp313-cp313-linux_x86_64.whl
     pip install flash-attn-3 --index-url https://download.pytorch.org/whl/cu130
     pip install flash-attn-4==4.0.0b23
     pip install "flash-attn-4[cu13]"
