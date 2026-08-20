@@ -156,6 +156,17 @@ else
     done
 fi
 
+# Setup Ollama if needed
+if [ ! -f "/usr/local/bin/ollama" ]
+    curl -fsSL https://ollama.com/install.sh | sh
+fi
+# Start Ollama
+echo "Starting Ollama"
+nohup ollama serve &> /workspace/ollama.log &
+sleep 5
+ollama run vaultbox/qwen3.5-uncensored:4b
+
+
 # Start ComfyUI with custom arguments if provided
 cd $COMFYUI_DIR
 FIXED_ARGS="--listen 0.0.0.0 --port 8188 --enable-manager --use-sage-attention"
